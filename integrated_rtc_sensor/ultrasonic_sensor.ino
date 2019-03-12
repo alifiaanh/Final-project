@@ -6,5 +6,5 @@ void ultrasonic_sensor(){
   digitalWrite(trigPin, LOW);
 
   durasi = pulseIn(echoPin, HIGH);
-  kedalaman = (durasi * 0.000343) / 2; 
+  kekosongan = (durasi * 0.000343) / 2; 
 }

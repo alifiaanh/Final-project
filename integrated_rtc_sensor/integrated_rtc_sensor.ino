@@ -16,7 +16,7 @@ DHT dht(DHTPIN, DHTTYPE);  //setting pin yang dipilih dan tipe DHT
 
 DS3231 rtc(SDA, SCL); //Reading Procedur 
 File myFile;
-double durasi, kedalaman;
+double durasi, kekosongan;
 float suhu;
 float kelembaban;
 
@@ -32,7 +32,7 @@ void setup()
   rtc.begin();
   rtc.setDOW(TUESDAY);
   rtc.setDate(12,03,2019);
-  rtc.setTime(15,23,00); 
+  rtc.setTime(20,04,00); 
 
  Serial.println("Read MicoSd Card");
  delay(1000);
@@ -43,14 +43,14 @@ void setup()
  return;
  }
 
- if(!SD.exists("testdata.txt")){
-  Serial.println("file testdata.txt not found");
-  Serial.println("create testdata.txt ......");
-  myFile = SD.open("testdata.txt", FILE_WRITE);
+ if(!SD.exists("sensfile.txt")){
+  Serial.println("file sensfile.txt not found");
+  Serial.println("create sensfile.txt ......");
+  myFile = SD.open("sensfile.txt", FILE_WRITE);
   myFile.close();
   Serial.println("create file succes!!");
  }else{
-  Serial.println("file testdata.txt is available");
+  Serial.println("file sensfile.txt is available");
  }
  delay(1000);
 }   
@@ -59,7 +59,7 @@ void loop()
 { 
   ultrasonic_sensor();
   dht_sensor();
-  myFile = SD.open("testdata.txt", FILE_WRITE);
+  myFile = SD.open("sensfile.txt", FILE_WRITE);
   if (myFile) // jika file tersedia tulis data
   {
   Serial.print(rtc.getDOWStr());
@@ -76,20 +76,20 @@ void loop()
   myFile.println(rtc.getTimeStr());
   myFile.close();
   
-  if (kedalaman <= 0.02 || kedalaman >= 4) {
+  if (kekosongan <= 0.02 || kekosongan >= 4) {
   Serial.println("diluar jangkauan");
   }else{
   Serial.print("Kekosongan:");  
-  Serial.print(kedalaman);
+  Serial.print(kekosongan);
   Serial.println(" meter");
   myFile.print("Kekosongan:");  
-  myFile.print(kedalaman);
+  myFile.print(kekosongan);
   myFile.println(" meter");
   }
   
   Serial.print("Suhu:");  
   Serial.print(suhu);
-  Serial.println("' Celcius");
+  Serial.println(" Celcius");
   
   Serial.print("Kelembaban:");  
   Serial.print(kelembaban);
@@ -98,7 +98,7 @@ void loop()
   
   myFile.print("Suhu:");  
   myFile.print(suhu);
-  myFile.println("'Celcius");
+  myFile.println(" Celcius");
   
   myFile.print("Kelembaban:");  
   myFile.print(kelembaban);
@@ -108,7 +108,7 @@ void loop()
  }
  else 
  {
- Serial.println("Failed open testdata.txt"); // jika gagal print error
+ Serial.println("Failed open sensfile.txt"); // jika gagal print error
  }
  delay(2000); //total jeda yaitu 5 detik karena proses penulisan data kurang lebih 3 detik
 } 

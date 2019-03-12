@@ -34,10 +34,10 @@ void setup () {
 }
 void loop() {
   count();
+  ultrasonic_sensor();
   if (kedalaman <= 0.02 || kedalaman >= 4) {
   Serial.println("diluar jangkauan");
   } else {
-  ultrasonic_sensor();
   dht_sensor();
   lcd_print();
   delay(25);
